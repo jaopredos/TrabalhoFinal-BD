@@ -2,6 +2,7 @@ from app import app
 from flask import request, render_template, jsonify, make_response, session, redirect, url_for
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 import json
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -33,26 +34,6 @@ def load_user(email):
             return User(user['funcionarioEmail'], user['funcionarioSenha'])
     return None
 
-@app.route("/") 
-def main():
-    return render_template('index.html') # Está correto
-
-@app.route("/index") 
-def index():
-    return render_template('index.html') # Está correto
-
-@app.route("/home") 
-def home():
-    return render_template('index.html') # Está correto
-
-@app.route("/about")
-def about():
-    return render_template("about.html")
-
-# @app.route("/login")
-# def login():
-#     return render_template("login.html")
-
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -73,3 +54,26 @@ def login():
         return "Credenciais inválidas!"
     return render_template('login.html')
 
+
+@app.route("/") 
+def main():
+    return render_template('index.html') # Está correto
+
+@app.route("/index") 
+def index():
+    return render_template('index.html') # Está correto
+
+@app.route("/home") 
+def home():
+    return render_template('index.html') # Está correto
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
+
+
+# @app.route("/login")
+# def login():
+#     return render_template("login.html")
