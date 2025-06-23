@@ -1,10 +1,8 @@
-# app/route.py
-
 from app import app
 from flask import request, render_template, jsonify, make_response, session, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 import os
-from sqlalchemy.sql import text # <-- CORREÇÃO 1: Importação adicionada
+from sqlalchemy.sql import text
 
 from .database import db_pool
 from .models import User
@@ -18,9 +16,9 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     try:
         with db_pool.connect() as conn:
-            # CORREÇÃO 2: Removido o prefixo 'sqlalchemy.'
             query = text("SELECT email FROM exemplo WHERE email = :email")
-            result = conn.execute(query, email=user_id).fetchone()
+            # CORREÇÃO AQUI: Passando parâmetros como um dicionário
+            result = conn.execute(query, {"email": user_id}).fetchone()
             if result:
                 return User(email=result[0])
     except Exception as e:
@@ -28,7 +26,7 @@ def load_user(user_id):
         return None
     return None
 
-# --- Rota de Login Modificada com PRINTS para Depuração ---
+# --- Rota de Login Modificada ---
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -36,7 +34,6 @@ def login():
         
         email = request.form['email']
         password = request.form['password']
-        # Usar f-strings com colchetes ajuda a ver espaços em branco acidentais
         print(f"1. Dados recebidos do formulário -> Email: [{email}], Senha: [{password}]")
 
         query = text("SELECT email FROM exemplo WHERE email = :email AND senha = :password")
@@ -46,14 +43,15 @@ def login():
         try:
             with db_pool.connect() as conn:
                 print("3. Conexão com o banco de dados estabelecida com sucesso.")
-                result = conn.execute(query, email=email, password=password).fetchone()
+                # CORREÇÃO AQUI: Passando parâmetros como um dicionário
+                result = conn.execute(query, {"email": email, "password": password}).fetchone()
                 print(f"4. Resultado da consulta no banco: {result}")
 
             if result:
                 print("5. Login VÁLIDO (resultado encontrado). Redirecionando para a página principal...")
                 user = User(email=result[0])
                 login_user(user)
-                return redirect(url_for('home'))
+                return redirect(url_for('mainfunc'))
             else:
                 print("5. Login INVÁLIDO (nenhum resultado encontrado). Redirecionando de volta para a página de login...")
                 flash("Email ou senha inválidos.")

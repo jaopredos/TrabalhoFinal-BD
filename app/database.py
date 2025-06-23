@@ -1,6 +1,8 @@
 import os
 import sqlalchemy
 from google.cloud.sql.connector import Connector
+from dotenv import load_dotenv
+load_dotenv()
 
 # Carrega as configurações do ambiente
 DB_USER = os.environ.get("DB_USER")
