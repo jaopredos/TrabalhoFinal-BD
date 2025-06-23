@@ -1,0 +1,65 @@
+.card-group, .card-title, .card-text{
+    color: white;
+}
+
+.card-group-plan {
+    background-image: linear-gradient(135deg, #13072E, #3f2182) !important;
+    height: 80vh;
+    background-color: transparent !important;
+    border-radius: 2rem;
+    padding: 1.3rem;
+    justify-content: space-between;
+    display: flex;
+}
+
+@media(max-width: 992px){
+    .card-group-plan{
+        display: flex;
+        flex-direction: column;
+        height: 130vh;
+    }
+    .card-body-plan{
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+    }
+}
+
+.card-plan {
+    align-items: center;
+    height: 50%;
+}
+
+.card-body-plan {
+    width: 90%;
+    border-width: 0.2rem !important;
+    border-color: #13072E !important;
+    border-radius: 1rem;
+    border: solid;
+    padding: 2rem 2rem 2rem 2rem;
+    transition: transform .4s ease-in-out;
+    justify-content:space-between;
+
+}
+
+.card-body-plan:hover{
+    transform: translateY(-1.5rem);
+    box-shadow: 8px 12px 12px rgba(0, 0, 0, 0.4);
+}
+
+.btn-success {
+    --bs-btn-bg: #13072E;
+    --bs-btn-color: white;
+    --bs-btn-border-color: white;
+    --bs-btn-hover-bg: white;
+    --bs-btn-hover-color: #13072E;
+    --bs-btn-hover-border-color: #13072E;
+    --bs-btn-border-width: 0.05rem;
+    --bs-btn-active-bg: #13072E;
+    --bs-btn-active-border-color: #13072E;
+    --bs-btn-disabled-bg: #13072E;
+    --bs-btn-disabled-border-color: #13072E;
+}
+
+.card-title-plan {
+    word-wrap: normal;
+}

@@ -1,0 +1,153 @@
+{% extends "templs/navfunc.html" %}
+{% block title %} Cadastrar {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/att.css') }}"> {% endblock %}
+{% block content %}
+<form id="dynamicForm" class="w-100" method="POST" action="/signup">
+    <!-- Dropdown Principal -->
+    <div class="mb-5 w-50">
+        <label for="userType" class="form-label text-white fs-2 fw-bold mb-3">Selecione Quem Deseja Cadastrar:</label>
+        <select id="userType" name="userType" class="form-select w-50" onchange="updateForm()">
+            <option value="Cliente">Cliente</option>
+            <option value="Funcionario">Funcionário</option>
+        </select>
+    </div>
+
+    <!-- Inputs para Cliente -->
+    <div id="clienteInputs">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteNome" name="clienteNome" placeholder="Nome">
+                </div>
+                <div class="mb-5">
+                    <input type="email" class="form-control" id="clienteEmail" name="clienteEmail" placeholder="Email">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteDepartamentos" name="clienteDepartamentos" placeholder="Departamentos">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteReceita" name="clienteReceita" placeholder="Receita">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteCnpj" name="clienteCnpj" placeholder="CNPJ">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteSede" name="clienteSede" placeholder="Sede">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteFuncionarios" name="clienteFuncionarios" placeholder="N° de Funcionários">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clientePv" name="clientePv" placeholder="Proposta de valor">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteTelefone" name="clienteTelefone" placeholder="Telefone">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteIndústria" name="clienteIndústria" placeholder="Indústria">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteCapital" name="clienteCapital" placeholder="Capital">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteSenha" name="clienteSenha" placeholder="Senha">
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-4 gap-3">
+            <button type="submit" class="btn UIButton" onclick="adicionarCliente()">Cadastrar Cliente</button>
+        </div>
+    </div>
+
+    <!-- Inputs para Funcionário -->
+    <div id="funcionarioInputs" class="hidden">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="funcionarioNome" name="funcionarioNome" placeholder="Nome">
+                </div>
+                <div class="mb-5">
+                    <input type="email" class="form-control" id="funcionarioEmail" name="funcionarioEmail" placeholder="Email">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="funcionarioSalario" name="funcionarioSalario" placeholder="Salário">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="funcionarioSenha" name="funcionarioSenha" placeholder="Senha">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="funcionarioCpf" name="funcionarioCpf" placeholder="CPF">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="funcionarioCep" name="funcionarioCep" placeholder="CEP">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="funcionarioFormação" name="funcionarioFormação" placeholder="Formação">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="funcionarioTipo" name="funcionarioTipo" placeholder="Tipo">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="funcionarioTelefone" name="funcionarioTelefone" placeholder="Telefone">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="funcionarioCargo" name="funcionarioCargo" placeholder="Cargo">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="funcionarioIdade" name="funcionarioIdade" placeholder="Idade">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="funcionarioGrau" name="funcionarioGrau" placeholder="Grau">
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-4 gap-3">
+            <button type="submit" class="btn UIButton" onclick="adicionarFuncionario()">Cadastrar Funcionário</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block script %}
+<script>
+    function updateForm() {
+        const userType = document.getElementById('userType').value;
+        const clienteInputs = document.getElementById('clienteInputs');
+        const funcionarioInputs = document.getElementById('funcionarioInputs');
+
+        // Função para resetar os valores dos inputs dentro de um elemento
+        function resetInputs(parent) {
+            const inputs = parent.querySelectorAll('input');
+            inputs.forEach(input => input.value = '');
+        }
+
+        if (userType === 'Cliente') {
+            resetInputs(funcionarioInputs); // Resetar os inputs do Funcionário
+            clienteInputs.classList.remove('hidden');
+            funcionarioInputs.classList.add('hidden');
+        } else if (userType === 'Funcionario') {
+            resetInputs(clienteInputs); // Resetar os inputs do Cliente
+            funcionarioInputs.classList.remove('hidden');
+            clienteInputs.classList.add('hidden');
+        }
+    }
+
+    function adicionarCliente() {
+        alert('Contrato Cliente acionado');
+    }
+
+    function adicionarFuncionario() {
+        alert('Contrato Funcionário acionado');
+    }
+</script>
+
+
+{% endblock %}

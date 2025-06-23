@@ -1,0 +1,149 @@
+{% extends "templs/navfunc.html" %}
+{% block title %} Atualizar Contrato {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/att.css') }}"> {% endblock %}
+{% block content %}
+<form id="dynamicForm" class="w-100">
+    <!-- Dropdown Principal -->
+    <div class="mb-5 w-50">
+        <label for="userType" class="form-label text-white fs-2 fw-bold mb-3">Selecione o Contrato do Cliente:</label>
+        <select id="userType" class="form-select w-50" onchange="updateForm()">
+            <option value="Cliente1">Contrato Cliente 1</option>
+            <option value="Cliente2">Contrato Cliente 2</option>
+        </select>
+    </div>
+
+    <!-- Inputs para Cliente -->
+    <div id="clienteInputs">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteNecessidade" placeholder="Necessidade">
+                </div>
+                <div class="mb-5">
+                    <input type="email" class="form-control" id="clientePreco" placeholder="Preço">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteDuracao" placeholder="Duração">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteManutencao" placeholder="Manutenção">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteFrequenciaAtualizacao"
+                        placeholder="Frequência Atualização">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteTamanhoBD"
+                        placeholder="Tamanho do banco de dados">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteHospedagem" placeholder="Serviço de hospedagem">
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-4 gap-3">
+            <button type="button" class="btn UIButton" onclick="adicionarCliente()">Atualizar Contrato</button>
+        </div>
+    </div>
+
+    <!-- Inputs para Funcionário -->
+    <div id="funcionarioInputs" class="hidden">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteNecessidade" placeholder="Necessidade">
+                </div>
+                <div class="mb-5">
+                    <input type="email" class="form-control" id="clientePreco" placeholder="Preço">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteDuracao" placeholder="Duração">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteManutencao" placeholder="Manutenção">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteFrequenciaAtualizacao"
+                        placeholder="Frequência Atualização">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteTamanhoBD"
+                        placeholder="Tamanho do banco de dados">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteHospedagem" placeholder="Serviço de hospedagem">
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-4 gap-3">
+            <button type="button" class="btn UIButton" onclick="adicionarFuncionario()">Cadastrar Funcionário</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block script %}
+<script>
+    async function updateForm() {
+    const userType = document.getElementById('userType').value;
+
+    try {
+        const response = await fetch(`/get_contract/${userType}`);
+        const data = await response.json();
+
+        if (response.ok) {
+            // Preencher os campos do formulário com os valores do contrato
+            document.getElementById('clienteNecessidade').value = data.Necessidade || "";
+            document.getElementById('clientePreco').value = data["Preço"] || "";
+            document.getElementById('clienteDuracao').value = data["Duração"] || "";
+            document.getElementById('clienteManutencao').value = data["Manutenção"] || "";
+            document.getElementById('clienteFrequenciaAtualizacao').value = data["Frequência Atualização"] || "";
+            document.getElementById('clienteTamanhoBD').value = data["Tamanho BD"] || "";
+            document.getElementById('clienteHospedagem').value = data.Hospedagem || "";
+        } else {
+            alert("Erro ao carregar os dados: " + data.error);
+        }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        alert("Erro ao carregar os dados.");
+    }
+}
+
+async function adicionarCliente() {
+    const userType = document.getElementById('userType').value;
+    const updatedData = {
+        "Necessidade": document.getElementById('clienteNecessidade').value,
+        "Preço": document.getElementById('clientePreco').value,
+        "Duração": document.getElementById('clienteDuracao').value,
+        "Manutenção": document.getElementById('clienteManutencao').value,
+        "Frequência Atualização": document.getElementById('clienteFrequenciaAtualizacao').value,
+        "Tamanho BD": document.getElementById('clienteTamanhoBD').value,
+        "Hospedagem": document.getElementById('clienteHospedagem').value
+    };
+
+    try {
+        const response = await fetch(`/update_contract/${userType}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updatedData)
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message);
+        } else {
+            alert("Erro ao atualizar os dados: " + result.error);
+        }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        alert("Erro ao atualizar os dados.");
+    }
+}
+
+
+</script>
+
+
+{% endblock %}

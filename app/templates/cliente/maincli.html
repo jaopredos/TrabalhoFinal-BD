@@ -1,0 +1,34 @@
+
+{% extends "templs/navcli.html" %}
+{% block title %} Home Cliente {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/maincli.css') }}"> {% endblock %}
+{% block content %}
+<div class="card card-plan">
+    <div class="card-body card-body-plan">
+        <h5 class="card-title card-title-plan">Predição</h5>
+        <p class="card-text">
+            Comece a ver as previsões do seu negócio e tenha acesso ao seu BI
+        </p>
+        <a href="/predict" class="btn UIButton">Ir para página</a>
+    </div>
+</div>
+<div class="card card-plan">
+    <div class="card-body card-body-plan">
+        <h5 class="card-title card-title-plan">Contrato</h5>
+        <p class="card-text">
+            Veja o seu contrato e tudo que foi discutido nele
+        </p>
+        <a href="/contract" class="btn UIButton">Ir para página</a>
+    </div>
+</div>
+<div class="card card-plan">
+    <div class="card-body card-body-plan">
+        <h5 class="card-title card-title-plan">Suporte</h5>
+        <p class="card-text">
+            Mande mensagem para o suporte e receba ajuda nos seus problemas
+        </p>
+        <a href="/suport" class="btn UIButton">Ir para página</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+form .form-control::placeholder {
+    color: #3f2182;
+    opacity: 1;
+    font-weight:500
+}
+
+form .form-control::-webkit-input-placeholder {
+    color: #3f2182;
+    font-weight:500
+}
+
+form .form-control:-ms-input-placeholder {
+    color: #3f2182;
+    font-weight:500
+}

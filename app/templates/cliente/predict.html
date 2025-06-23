@@ -1,0 +1,68 @@
+{% extends "templs/navcli.html" %}
+{% block title %} Previsão {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/predict.css') }}"> {% endblock %}
+{% block content %}
+<!-- Formulário de Upload -->
+
+    <form action="/uploadfile" method="POST" class="d-flex flex-column align-items-center justify-content-center w-100" style="background: transparent;" enctype="multipart/form-data">
+        <label for="fileInput" class="btn UIButton">
+            Selecione o Banco de Dados
+        </label>
+        <input id="fileInput" type="file" class="form-control mt-2 w-25" accept=".csv" name="file_upload">
+        <span class="file-name mt-2"></span>
+        <button type="submit" class="btn UIButton mt-3">Analisar</button>
+    </form>
+<!-- Resultados -->
+{% if result %}
+
+
+<!-- Gráficos -->
+<div class="row mt-5 text-center">
+    {% if plot_url_monteCarlo %}
+    <div class="col-md-12 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url_monteCarlo) }}" class="grafico img-fluid" alt="Gráfico de Monte Carlo" style="max-width: 90%">
+    </div>
+    {% endif %}
+
+    {% if plot_url %}
+    <div class="col-md-6 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url) }}" class="grafico img-fluid" alt="Gráfico de Predição">
+    </div>
+    {% endif %}
+    
+    {% if plot_url_genero %}
+    <div class="col-md-6 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url_genero) }}" class="grafico img-fluid" alt="Gráfico de Tipo de Gênero">
+    </div>
+    {% endif %}
+    
+    {% if plot_url_clientes %}
+    <div class="col-md-6 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url_clientes) }}" class="grafico img-fluid" alt="Gráfico de Tipo de Clientes">
+    </div>
+    {% endif %}
+    
+    {% if plot_url_filial %}
+    <div class="col-md-6 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url_filial) }}" class="grafico img-fluid" alt="Gráfico Pizza Filial">
+    </div>
+    {% endif %}
+    
+    {% if plot_url_mes %}
+    <div class="col-md-6 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url_mes) }}" class="grafico img-fluid" alt="Gráfico Pizza Mês">
+    </div>
+    {% endif %}
+    
+    {% if plot_url_pagamento %}
+    <div class="col-md-6 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url_pagamento) }}" class="grafico img-fluid" alt="Gráfico de Tipo de Pagamento">
+    </div>
+    {% endif %}
+</div>
+
+{% endif %}
+
+
+{% endblock %}

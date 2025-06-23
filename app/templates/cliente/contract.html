@@ -1,0 +1,33 @@
+{% extends "templs/navcli.html" %}
+{% block title %} Contrato {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contract.css') }}"> {% endblock %}
+{% block content %}
+    <div class="card-body">
+                
+        <p class="card-title text-center" style="font-size: 2rem; width: 100%;">Informações do Contrato e Produto</p>
+        
+        <p class="card-text mt-3" style="font-size: 1.1rem; text-align: justify;">
+            Necessidade: </br> Previsão mensal da quantidade necessária em estoque para cada item </br>
+                        Análise sobre vendas e funcionários
+        </p>
+        <p class="card-text mt-3" style="font-size: 1.1rem; text-align: justify;">
+            Preço: R$ 5000,00
+        </p>
+        <p class="card-text mt-3" style="font-size: 1.1rem; text-align: justify;">
+            Duração do contrato: 1 Ano (12 Meses)
+        </p>
+        <p class="card-text mt-3" style="font-size: 1.1rem; text-align: justify;">
+            Haverá manutenções: Sim
+        </p>
+        <p class="card-text mt-3" style="font-size: 1.1rem; text-align: justify;">
+            Frequência de atualizações: A cada 2 meses (60 dias)
+        </p>
+        <p class="card-text mt-3" style="font-size: 1.1rem; text-align: justify;">
+            Tamanho do banco de dados: 18 colunas x 13000 linhas por mês (2 Mb em csv)
+        </p>
+        <p class="card-text mt-3" style="font-size: 1.1rem; text-align: justify;">
+            Serviço de hospedagem: AWS
+        </p>
+    </div>
+{% endblock %}

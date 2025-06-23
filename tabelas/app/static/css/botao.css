@@ -1,0 +1,20 @@
+.UIButton {
+    font-family: 'Poppins';
+    border-radius: 1.7rem;
+    font-weight: 600;
+    --bs-btn-bg: white;
+    --bs-btn-color: #13072E;
+    --bs-btn-border-color: #13072E;
+    --bs-btn-hover-bg: #13072E;
+    --bs-btn-hover-color: white;
+    --bs-btn-hover-border-color: white;
+    --bs-btn-border-width: 0.1rem;
+    --bs-btn-active-bg: white;
+    --bs-btn-active-border-color: white;
+    --bs-btn-disabled-bg: white;
+    --bs-btn-disabled-border-color: white;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+
+}

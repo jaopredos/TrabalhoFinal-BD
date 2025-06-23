@@ -1,0 +1,25 @@
+{% extends "templs/navcli.html" %}
+{% block title %} Suporte {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/suport.css') }}"> {% endblock %}
+{% block content %}
+<form class="d-flex justify-content-center flex-column w-100 align-items-center" method="post">
+    <h2 class="text-center mb-4 text-white">Tela de Suporte</h2>
+    <div class="form-group w-75">
+        <textarea class="form-control" name="assunto" rows="2" placeholder="Assunto:"></textarea>
+    </div>
+
+    <div class="form-group w-75 mt-4">
+        <textarea class="form-control" name="descricao" rows="6" placeholder="Descreva o problema:"></textarea>
+    </div>
+
+    <div class="text-center d-flex justify-content-center mt-3 mb-3">
+        <button type="submit" class="btn UIButton">Enviar</button>
+    </div>
+</form>
+<div class="d-flex justify-content-center flex-column w-100 align-items-center">
+    <p class="text-white fw-bold">Email de Suporte:</p>
+    <p class="text-white fw-nomral">suporte@bcdp.com.br</p>
+</div>
+
+{% endblock %}
