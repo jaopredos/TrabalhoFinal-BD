@@ -110,3 +110,8 @@ main {
     padding-top: 0 !important;
     width: 100% !important;
 }
+
+.texto-logo {
+    position: relative;
+    top: 1rem; /* Ajuste o valor para descer mais ou menos */
+}

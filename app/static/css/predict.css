@@ -14,3 +14,11 @@
     max-width: 70%;
     margin: 10px;
 }
+
+table, td, th {
+    color: white !important;
+}
+
+.tabela{
+    font-size: 0.6rem !important;
+}

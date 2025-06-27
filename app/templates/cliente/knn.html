@@ -1,0 +1,171 @@
+{% extends "templs/navfunc.html" %}
+{% block title %} Semelhanças {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/knn.css') }}"> {% endblock %}
+{% block content %}
+<form id="knnForm" class="d-flex flex-column align-items-center justify-content-center w-100" method="post" action="">
+    <div class="row">
+        <!-- Coluna 1 -->
+        <div class="col-md-4">
+            <div class="mb-3">
+                <label for="age" class="form-label">Idade (age)</label>
+                <input type="number" step="any" class="form-control" id="age" required>
+            </div>
+            <div class="mb-3">
+                <label for="player_height" class="form-label">Altura (player_height)</label>
+                <input type="number" step="any" class="form-control" id="player_height" required>
+            </div>
+            <div class="mb-3">
+                <label for="player_weight" class="form-label">Peso (player_weight)</label>
+                <input type="number" step="any" class="form-control" id="player_weight" required>
+            </div>
+            <div class="mb-3">
+                <label for="gp" class="form-label">Jogos (gp)</label>
+                <input type="number" step="any" class="form-control" id="gp" required>
+            </div>
+            <div class="mb-3">
+                <label for="pts" class="form-label">Pontos (pts)</label>
+                <input type="number" step="any" class="form-control" id="pts" required>
+            </div>
+        </div>
+        <!-- Coluna 2 -->
+        <div class="col-md-4">
+            <div class="mb-3">
+                <label for="reb" class="form-label">Rebotes (reb)</label>
+                <input type="number" step="any" class="form-control" id="reb" required>
+            </div>
+            <div class="mb-3">
+                <label for="ast" class="form-label">Assistências (ast)</label>
+                <input type="number" step="any" class="form-control" id="ast" required>
+            </div>
+            <div class="mb-3">
+                <label for="net_rating" class="form-label">Net Rating</label>
+                <input type="number" step="any" class="form-control" id="net_rating" >
+            </div>
+            <div class="mb-3">
+                <label for="oreb_pct" class="form-label">OReb %</label>
+                <input type="number" step="any" class="form-control" id="oreb_pct" >
+            </div>
+            <div class="mb-3">
+                <label for="dreb_pct" class="form-label">DReb %</label>
+                <input type="number" step="any" class="form-control" id="dreb_pct" >
+            </div>
+        </div>
+        <!-- Coluna 3 -->
+        <div class="col-md-4">
+            <div class="mb-3">
+                <label for="usg_pct" class="form-label">USG %</label>
+                <input type="number" step="any" class="form-control" id="usg_pct" >
+            </div>
+            <div class="mb-3">
+                <label for="ts_pct" class="form-label">TS %</label>
+                <input type="number" step="any" class="form-control" id="ts_pct" >
+            </div>
+            <div class="mb-3">
+                <label for="ast_pct" class="form-label">AST %</label>
+                <input type="number" step="any" class="form-control" id="ast_pct" >
+            </div>
+            <div class="mb-3">
+                <label for="num_recommendations" class="form-label">Nº de Recomendações</label>
+                <input type="number" class="form-control" id="num_recommendations" value="3" required>
+            </div>
+            <div class="mb-3">
+                <label for="player_name" class="form-label">Nome do Jogador (Opcional)</label>
+                <input type="text" class="form-control" id="player_name">
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+        <button type="submit" class="btn UIButton">Analisar</button>
+    </div>
+        <div id="results-container" class="mt-4" style="display: none;">
+        <h3 class="text-white">Jogadores Similares Recomendados:</h3>
+        <ul id="results-list"></ul>
+    </div>
+</form>
+{% endblock %}
+
+{% block script %}
+<script>
+    document.getElementById('knnForm').addEventListener('submit', async function(event) {
+        // Previne o envio padrão do formulário, que recarregaria a página
+        event.preventDefault();
+
+        // 1. Coleta os dados de todos os inputs
+        const newPlayerData = {
+            age: parseFloat(document.getElementById('age').value),
+            player_height: parseFloat(document.getElementById('player_height').value),
+            player_weight: parseFloat(document.getElementById('player_weight').value),
+            gp: parseFloat(document.getElementById('gp').value),
+            pts: parseFloat(document.getElementById('pts').value),
+            reb: parseFloat(document.getElementById('reb').value),
+            ast: parseFloat(document.getElementById('ast').value),
+            net_rating: parseFloat(document.getElementById('net_rating').value),
+            oreb_pct: parseFloat(document.getElementById('oreb_pct').value),
+            dreb_pct: parseFloat(document.getElementById('dreb_pct').value),
+            usg_pct: parseFloat(document.getElementById('usg_pct').value),
+            ts_pct: parseFloat(document.getElementById('ts_pct').value),
+            ast_pct: parseFloat(document.getElementById('ast_pct').value)
+        };
+        
+        // Adiciona o nome do jogador se ele foi preenchido
+        const playerName = document.getElementById('player_name').value;
+        if (playerName) {
+            newPlayerData.player_name = playerName;
+        }
+
+        const numRecommendations = parseInt(document.getElementById('num_recommendations').value);
+
+        // 2. Monta o corpo da requisição (payload) no formato JSON esperado pelo backend
+        const requestBody = {
+            new_player_data: newPlayerData,
+            num_recommendations: numRecommendations
+        };
+
+        // 3. Envia a requisição para o endpoint /similarPlayers
+        try {
+            const response = await fetch("{{ url_for('similar_players_flask') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            const resultsContainer = document.getElementById('results-container');
+            const resultsList = document.getElementById('results-list');
+            resultsList.innerHTML = ''; // Limpa resultados anteriores
+
+            if (response.ok) {
+                const data = await response.json();
+                
+                // 4. Exibe os resultados na tela
+                if (data.length > 0) {
+                    data.forEach(player => {
+                        const li = document.createElement('li');
+                        li.textContent = `Jogador: ${player.player_name} (Distância: ${player.distance.toFixed(4)})`;
+                        resultsList.appendChild(li);
+                    });
+                } else {
+                    const li = document.createElement('li');
+                    li.textContent = 'Nenhum jogador similar encontrado.';
+                    resultsList.appendChild(li);
+                }
+
+            } else {
+                 const errorData = await response.json();
+                 const li = document.createElement('li');
+                 li.textContent = `Erro: ${errorData.detail || 'Falha ao buscar recomendações.'}`;
+                 resultsList.appendChild(li);
+            }
+            resultsContainer.style.display = 'block'; // Mostra a seção de resultados
+
+        } catch (error) {
+            console.error('Erro na requisição:', error);
+            const resultsList = document.getElementById('results-list');
+            resultsList.innerHTML = '<li>Erro de conexão com o servidor.</li>';
+            document.getElementById('results-container').style.display = 'block';
+        }
+    });
+</script>
+{% endblock %}

@@ -1,277 +1,53 @@
 {% extends "templs/navfunc.html" %}
 
-{% block title %} Atualizar Cadastro {% endblock %}
+{% block title %} Meu Perfil {% endblock %}
 
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/att.css') }}">
 {% endblock %}
 
 {% block content %}
-<form id="dynamicForm" class="w-100">
-    <!-- Dropdown Principal -->
-    <div class="mb-5 w-50">
-        <label for="userType" class="form-label text-white fs-2 fw-bold mb-3">Selecione o Tipo de Usuário:</label>
-        <select id="userType" class="form-select w-50" onchange="updateForm()">
-            <option value="Cliente">Cliente</option>
-            <option value="Funcionario">Funcionário</option>
-        </select>
-    </div>
-
-    <!-- Inputs para Cliente -->
-    <div id="clienteInputs">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="mb-5">
-                    <input name="searchKey" type="text" class="form-control" id="clienteNome" placeholder="Nome">
-                </div>
-                <div class="mb-5">
-                    <input type="email" class="form-control" id="clienteEmail" placeholder="Email">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteDepartamentos" placeholder="Departamentos">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteReceita" placeholder="Receita">
-                </div>
+<form id="profileForm" class="w-100" method="POST">
+    <h1 class="form-label text-white fs-2 fw-bold mb-4">Atualizar Informações</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome de Usuário</label>
+                <input type="text" class="form-control" id="nome_login" name="nome_login" value="{{ user.nome or '' }}">
             </div>
-            <div class="col-md-4">
-                <div class="mb-5">
-                    <select id="clienteCnpj" class="form-select" onchange="loadUserData()">
-                        <!-- Options serão carregadas dinamicamente -->
-                    </select>
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteSede" placeholder="Sede">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteFuncionarios" placeholder="N° de Funcionários">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="clientePv" placeholder="Proposta de valor">
-                </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ user.email or '' }}" >
             </div>
-            <div class="col-md-4">
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteTelefone" placeholder="Telefone">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteIndústria" placeholder="Indústria">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteCapital" placeholder="Capital">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteSenha" placeholder="Senha">
-                </div>
+            <div class="mb-3">
+                <label for="senha" class="form-label">Senha</label>
+                <input type="text" class="form-control" id="senha" name="senha" value="{{ user.senha or '' }}">
+            </div>
+            <div class="mb-3">
+                <label for="telefone" class="form-label">Telefone</label>
+                <input type="text" class="form-control" id="telefone" name="telefone" value="{{ user.telefone or '' }}">
             </div>
         </div>
-        <div class="d-flex justify-content-center mt-4 gap-3">
-            <button type="submit" class="btn UIButton" onclick="atualizarCadastro()">Atualizar Cadastro</button>
+        
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="tipo_plano" class="form-label">Seu Plano</label>
+                <input type="text" class="form-control" id="tipo_plano" name="tipo_plano" value="{{ user.tipo_plano or 'Nenhum' }}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="status_assinatura" class="form-label">Status da Assinatura</label>
+                <input type="text" class="form-control" id="status_assinatura" name="status_assinatura" style="text-transform: uppercase;" value="{{ user.status_assinatura or 'N/A' }}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="data_vencimento" class="form-label">Vencimento da Assinatura</label>
+                <input type="date" class="form-control" id="data_vencimento" name="data_vencimento" value="{{ user.data_vencimento_assinatura or '' }}" readonly>
+            </div>
         </div>
     </div>
-
-    <!-- Inputs para Funcionário -->
-    <div id="funcionarioInputs" class="hidden">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioNome" placeholder="Nome">
-                </div>
-                <div class="mb-5">
-                    <input type="email" class="form-control" id="funcionarioEmail" placeholder="Email">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioSalario" placeholder="Salário">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioSenha" placeholder="Senha">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-5">
-
-                    <select id="funcionarioCpf" class="form-select " onchange="loadUserData()">
-                        <!-- As opções serão carregadas dinamicamente -->
-                    </select>
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioCep" placeholder="CEP">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioFormacao" placeholder="Formacao">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioTipo" placeholder="Tipo">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioTelefone" placeholder="Telefone">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioCargo" placeholder="Cargo">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioIdade" placeholder="Idade">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioGrau" placeholder="Grau">
-                </div>
-            </div>
-        </div>
-        <div class="d-flex justify-content-center mt-4 gap-3">
-            <button type="submit" class="btn UIButton" onclick="atualizarCadastro()">Atualizar Cadastro</button>
-        </div>
+    
+    <div class="d-flex justify-content-center mt-4 gap-3">
+        <button type="submit" class="btn UIButton">Salvar Alterações</button>
     </div>
 </form>
-{% endblock %}
-
-{% block script %}
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        updateForm(); // Chama a função ao carregar a página
-    });
-
-    function updateForm() {
-        console.log("Dropdown alterado!");
-        let userType = document.getElementById("userType").value.trim().toLowerCase();
-        console.log(`Tipo de usuário selecionado: ${userType}`);
-
-        const clienteInputs = document.getElementById("clienteInputs");
-        const funcionarioInputs = document.getElementById("funcionarioInputs");
-
-        if (userType === "cliente") {
-            clienteInputs.style.display = "block";
-            funcionarioInputs.style.display = "none";
-            fetchOptions("Cliente", document.getElementById("clienteCnpj"));
-        } else if (userType === "funcionario") {
-            funcionarioInputs.style.display = "block";
-            clienteInputs.style.display = "none";
-            fetchOptions("Funcionario", document.getElementById("funcionarioCpf"));
-        } else {
-            console.error("Tipo de usuário inválido selecionado.");
-        }
-    }
-
-    async function fetchOptions(userType, selectElement) {
-        console.log(`Chamando fetchOptions para: ${userType}`);
-        try {
-            const response = await fetch(`/get_identifiers?type=${userType}`);
-            console.log(`Requisição feita para: /get_identifiers?type=${userType}`);
-
-            if (!response.ok) {
-                throw new Error(`Erro ao buscar identificadores: ${response.statusText}`);
-            }
-
-            const data = await response.json();
-            console.log(`Dados retornados para ${userType}:`, data);
-
-            // Limpa as opções existentes no dropdown
-            selectElement.innerHTML = "<option value=''>Selecione o CPF/CNPJ</option>";
-
-            // Adiciona as novas opções retornadas
-            data.forEach(identifier => {
-                const option = document.createElement("option");
-                option.value = identifier; // Define o valor da opção
-                option.textContent = identifier; // Define o texto visível da opção
-                selectElement.appendChild(option); // Adiciona ao dropdown
-            });
-        } catch (error) {
-            console.error("Erro ao buscar identificadores:", error);
-        }
-    }
-
-    async function loadUserData() {
-        const userType = document.getElementById("userType").value;
-        const identifier = userType === "Cliente"
-            ? document.getElementById("clienteCnpj").value
-            : document.getElementById("funcionarioCpf").value;
-
-        try {
-            const response = await fetch(`/get_user_data?type=${userType}&id=${identifier}`);
-            const userData = await response.json();
-
-            // Preenche os campos com os dados do usuário
-            for (const [key, value] of Object.entries(userData)) {
-                const input = document.getElementById(key);
-                if (input) {
-                    input.value = value;
-                }
-            }
-        } catch (error) {
-            console.error("Erro ao carregar dados do usuário:", error);
-        }
-    }
-
-
-    async function atualizarCadastro() {
-        event.preventDefault(); // Evita o envio do formulário convencional
-
-        const userType = document.getElementById("userType").value;
-        const identifier = userType === "Cliente"
-            ? document.getElementById("clienteCnpj").value
-            : document.getElementById("funcionarioCpf").value;
-
-        if (!identifier) {
-            alert("Selecione um CPF/CNPJ válido.");
-            return;
-        }
-        
-        let userData = {};
-
-        if (userType === "Cliente") {
-            userData = {
-                clienteCnpj: document.getElementById("clienteCnpj").value,
-                clienteNome: document.getElementById("clienteNome").value,
-                clienteEmail: document.getElementById("clienteEmail").value,
-                clienteDepartamentos: document.getElementById("clienteDepartamentos").value,
-                clienteReceita: document.getElementById("clienteReceita").value,
-                clienteSede: document.getElementById("clienteSede").value,
-                clienteFuncionarios: document.getElementById("clienteFuncionarios").value,
-                clientePv: document.getElementById("clientePv").value,
-                clienteTelefone: document.getElementById("clienteTelefone").value,
-                clienteIndústria: document.getElementById("clienteIndústria").value,
-                clienteCapital: document.getElementById("clienteCapital").value,
-                clienteSenha: document.getElementById("clienteSenha").value
-            };
-        } else if (userType === "Funcionario") {
-            userData = {
-                funcionarioCpf: document.getElementById("funcionarioCpf").value,
-                funcionarioNome: document.getElementById("funcionarioNome").value,
-                funcionarioEmail: document.getElementById("funcionarioEmail").value,
-                funcionarioSalario: document.getElementById("funcionarioSalario").value,
-                funcionarioSenha: document.getElementById("funcionarioSenha").value,
-                funcionarioCep: document.getElementById("funcionarioCep").value,
-                funcionarioFormacao: document.getElementById("funcionarioFormacao").value,
-                funcionarioTipo: document.getElementById("funcionarioTipo").value,
-                funcionarioTelefone: document.getElementById("funcionarioTelefone").value,
-                funcionarioCargo: document.getElementById("funcionarioCargo").value,
-                funcionarioIdade: document.getElementById("funcionarioIdade").value,
-                funcionarioGrau: document.getElementById("funcionarioGrau").value
-            };
-        }
-
-        try {
-            const response = await fetch(`/update_user_data?type=${userType}&id=${identifier}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                alert(`${userType} atualizado com sucesso!`);
-            } else {
-                alert(`Erro ao atualizar o ${userType}: ` + result.error);
-            }
-        } catch (error) {
-            console.error(`Erro ao atualizar ${userType}:`, error);
-            alert(`Erro ao atualizar ${userType}`);
-        }
-    }
-
-
-</script>
 {% endblock %}

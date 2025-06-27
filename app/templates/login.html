@@ -1,5 +1,5 @@
 {% extends "templs/nav.html" %}
-{% block title %} Sobre nós {% endblock %}
+{% block title %} Login {% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock %}
@@ -17,6 +17,9 @@
         </div>
         <div class="d-flex justify-content-center bg-transparent">
             <button type="submit" class="btn UIButton" style="width: 30%;">Login</button>
+        </div>
+        <div class="d-flex justify-content-center bg-transparent mt-3">
+            <a href="{{ url_for('cadast') }}" class="btn UIButton" style="width: 30%; text-decoration: none;">Cadastrar-se</a>
         </div>
     </form>
 </div>
