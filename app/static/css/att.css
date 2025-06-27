@@ -30,6 +30,7 @@ form .form-control:-ms-input-placeholder {
 .form-label {
     margin-bottom: 0.5rem; /* Reduz o espaço entre o label e o select/input */
     display: block; /* Mantém o comportamento inline do label */
+    color: white;
 }
 
 .mb-5 {
@@ -40,3 +41,4 @@ form .form-control:-ms-input-placeholder {
 .form-control {
     min-height: 2.5rem; /* Alinha os tamanhos dos inputs e selects */
 }
+

@@ -5,9 +5,7 @@ from flask import request, render_template, jsonify, make_response
 def contract():
     return render_template('cliente/contract.html')
 
-@app.route("/predict") 
-def predict():
-    return render_template('cliente/predict.html')
+
 
 
 @app.route("/maincli")

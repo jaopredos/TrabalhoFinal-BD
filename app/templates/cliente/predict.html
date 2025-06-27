@@ -5,12 +5,7 @@
 {% block content %}
 <!-- Formulário de Upload -->
 
-    <form action="/uploadfile" method="POST" class="d-flex flex-column align-items-center justify-content-center w-100" style="background: transparent;" enctype="multipart/form-data">
-        <label for="fileInput" class="btn UIButton">
-            Selecione o Banco de Dados
-        </label>
-        <input id="fileInput" type="file" class="form-control mt-2 w-25" accept=".csv" name="file_upload">
-        <span class="file-name mt-2"></span>
+    <form action="/getNativa" method="GET" class="d-flex flex-column align-items-center justify-content-center w-100" style="background: transparent;" enctype="multipart/form-data">
         <button type="submit" class="btn UIButton mt-3">Analisar</button>
     </form>
 <!-- Resultados -->

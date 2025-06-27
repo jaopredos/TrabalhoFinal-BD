@@ -4,6 +4,7 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 import os
 from sqlalchemy.sql import text
 
+
 from .database import db_pool
 from .models import User
 
@@ -12,11 +13,12 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+
 @login_manager.user_loader
 def load_user(user_id):
     try:
         with db_pool.connect() as conn:
-            query = text("SELECT email FROM exemplo WHERE email = :email")
+            query = text("SELECT email FROM olheiros WHERE email = :email")
             # CORREÇÃO AQUI: Passando parâmetros como um dicionário
             result = conn.execute(query, {"email": user_id}).fetchone()
             if result:
@@ -34,9 +36,10 @@ def login():
         
         email = request.form['email']
         password = request.form['password']
+
         print(f"1. Dados recebidos do formulário -> Email: [{email}], Senha: [{password}]")
 
-        query = text("SELECT email FROM exemplo WHERE email = :email AND senha = :password")
+        query = text("SELECT email FROM olheiros WHERE email = :email AND senha = :password")
         
         print("2. Código chegou na parte de consultar o SQL. Preparando para executar a query...")
         

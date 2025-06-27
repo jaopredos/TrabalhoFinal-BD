@@ -8,22 +8,21 @@
 
 {% block content %}
 <form id="profileForm" class="w-100" method="POST">
-    <h1 class="form-label text-white fs-2 fw-bold mb-4">Atualizar Minhas Informações</h1>
+    <h1 class="form-label text-white fs-2 fw-bold mb-4">Atualizar Informações</h1>
     
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="mb-3">
-                <label for="nome" class="form-label">Nome</label>
-                <input type="text" class="form-control" id="nome" name="nome" value="{{ user.nome or '' }}">
+                <label for="nome" class="form-label">Nome de Usuário</label>
+                <input type="text" class="form-control" id="nome_login" name="nome_login" value="{{ user.nome or '' }}">
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ user.email or '' }}" readonly>
-                <small class="form-text text-muted">O email não pode ser alterado.</small>
+                <input type="email" class="form-control" id="email" name="email" value="{{ user.email or '' }}" >
             </div>
             <div class="mb-3">
-                <label for="senha" class="form-label">Nova Senha</label>
-                <input type="password" class="form-control" id="senha" name="senha" placeholder="Deixe em branco para não alterar">
+                <label for="senha" class="form-label">Senha</label>
+                <input type="text" class="form-control" id="senha" name="senha" value="{{ user.senha or '' }}">
             </div>
             <div class="mb-3">
                 <label for="telefone" class="form-label">Telefone</label>
@@ -31,29 +30,18 @@
             </div>
         </div>
         
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="mb-3">
-                <label for="jogador" class="form-label">Jogador Favorito</label>
-                <input type="text" class="form-control" id="jogador" name="jogador" value="{{ user.jogador or '' }}">
+                <label for="tipo_plano" class="form-label">Seu Plano</label>
+                <input type="text" class="form-control" id="tipo_plano" name="tipo_plano" value="{{ user.tipo_plano or 'Nenhum' }}" readonly>
             </div>
             <div class="mb-3">
-                <label for="time" class="form-label">Time do Coração</label>
-                <input type="text" class="form-control" id="time" name="time" value="{{ user.time or '' }}">
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="mb-3">
-                <label for="tipo_plano" class="form-label">Tipo do Plano</label>
-                <input type="text" class="form-control" id="tipo_plano" name="tipo_plano" value="{{ user.tipo_plano or '' }}" readonly>
+                <label for="status_assinatura" class="form-label">Status da Assinatura</label>
+                <input type="text" class="form-control" id="status_assinatura" name="status_assinatura" style="text-transform: uppercase;" value="{{ user.status_assinatura or 'N/A' }}" readonly>
             </div>
             <div class="mb-3">
-                <label for="tipo_pagamento" class="form-label">Forma de Pagamento</label>
-                <input type="text" class="form-control" id="tipo_pagamento" name="tipo_pagamento" value="{{ user.tipo_pagamento or '' }}" readonly>
-            </div>
-            <div class="mb-3">
-                <label for="status_pagamento" class="form-label">Status do Pagamento</label>
-                <input type="text" class="form-control" id="status_pagamento" name="status_pagamento" value="{{ user.status_pagamento or '' }}" readonly>
+                <label for="data_vencimento" class="form-label">Vencimento da Assinatura</label>
+                <input type="date" class="form-control" id="data_vencimento" name="data_vencimento" value="{{ user.data_vencimento_assinatura or '' }}" readonly>
             </div>
         </div>
     </div>
