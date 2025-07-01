@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.neighbors import NearestNeighbors
-from .data_process import df_processed, numerical_features, scaler, X_scaled
+from data_process import df_processed, numerical_features, scaler, X_scaled
 
 
 k_recommendations = 3

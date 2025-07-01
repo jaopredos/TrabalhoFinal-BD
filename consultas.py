@@ -1,4 +1,4 @@
-from .bigquery import client
+from bigquery import client
 import pandas as pd
 from typing import List, Any, Tuple
 

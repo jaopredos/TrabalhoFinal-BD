@@ -1,4 +1,4 @@
-from .consultas import get_tabelao
+from consultas import get_tabelao
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
