@@ -17,12 +17,10 @@ client = bigquery.Client()
 def mainfunc():
     return render_template('funcionario/mainfunc.html')
 
-# A rota agora aceita tanto GET (para mostrar) quanto POST (para salvar)
 @app.route("/perfil", methods=['GET', 'POST'])
 @login_required
 def perfil():
 
-    # --- LÓGICA PARA SALVAR OS DADOS (QUANDO O FORMULÁRIO É ENVIADO) ---
     if request.method == 'POST':
         try:
             # 1. Pega os dados do formulário
@@ -66,8 +64,6 @@ def perfil():
         # 5. Redireciona de volta para a página de perfil
         return redirect(url_for('perfil'))
 
-    # --- LÓGICA PARA MOSTRAR OS DADOS (QUANDO A PÁGINA É CARREGADA) ---
-    # Este bloco GET permanece o mesmo de antes
     user_data = None
     try:
         query = text("""
