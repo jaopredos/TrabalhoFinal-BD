@@ -9,7 +9,7 @@ por João Pedro de Castro, Bruno Moreira, Cleiver Batista e Bianca Visco
 - Precisávamos utilizar dois tipos de bancos de dados distintos e, além disso, precisávamos realizar algumas análises dos nossos dados em plataformas de BI. 
 - Para usar dois bancos de dados distintos, usaremos o Banco de Dados Relacional, mais especificamente o Postgres, para cuidar da parte de login e cadastro da nossa plataforma e o Data Warehouse, mais especificamente o BigQuery, para armazenar os nossos dados dos jogadores.
 - Depois que tivemos a ideia do que fazermos, fomos atrás dos [dados](https://www.kaggle.com/datasets/justinas/nba-players-data).
-- 
+- A análise de BI/Dashboards foi feita pela plataforma Looker Studio da Google, devido a fácil integração com o BigQuery para abastecimento dos dados.
 
 ### Instruções para rodar o código:
 
