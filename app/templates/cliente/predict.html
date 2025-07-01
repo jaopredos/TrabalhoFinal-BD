@@ -1,68 +1,31 @@
-{% extends "templs/navcli.html" %}
-{% block title %} Previsão {% endblock %}
+{% extends "templs/navfunc.html" %}
+{% block title %} Análises {% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/predict.css') }}"> {% endblock %}
 {% block content %}
 <!-- Formulário de Upload -->
 
-    <form action="/uploadfile" method="POST" class="d-flex flex-column align-items-center justify-content-center w-100" style="background: transparent;" enctype="multipart/form-data">
-        <label for="fileInput" class="btn UIButton">
-            Selecione o Banco de Dados
-        </label>
-        <input id="fileInput" type="file" class="form-control mt-2 w-25" accept=".csv" name="file_upload">
-        <span class="file-name mt-2"></span>
-        <button type="submit" class="btn UIButton mt-3">Analisar</button>
+     <!-- O formulário agora aponta para a própria rota '/analises' -->
+    <form action="{{ url_for('analises') }}" method="GET" class="d-flex flex-column align-items-center justify-content-center w-100" style="background: transparent;">
+        <!-- Este campo oculto envia o sinal para o backend de que queremos analisar os dados -->
+        <input type="hidden" name="analisar" value="true">
+        <button type="submit" class="btn UIButton mt-3">Analisar Dados</button>
     </form>
-<!-- Resultados -->
-{% if result %}
 
-
-<!-- Gráficos -->
-<div class="row mt-5 text-center">
-    {% if plot_url_monteCarlo %}
-    <div class="col-md-12 mb-4">
-        <img src="{{ url_for('uploaded_file', filename=plot_url_monteCarlo) }}" class="grafico img-fluid" alt="Gráfico de Monte Carlo" style="max-width: 90%">
+    <!-- Seção de Resultados: Só aparece se a variável 'dataframe' tiver sido recebida e não estiver vazia -->
+    {% if dataframe is not none and not dataframe.empty %}
+    <div class="mt-5">
+        <h2 class="text-white">Resultados da Análise</h2>
+        <div class="table-responsive">
+            <!--
+            O pandas.to_html() converte o DataFrame em uma tabela HTML.
+            O filtro '| safe' é crucial, pois diz ao Flask para renderizar o HTML gerado.
+            -->
+            {{ dataframe.to_html(classes='table table-striped table-bordered tabela', index=False) | safe }}
+        </div>
     </div>
     {% endif %}
-
-    {% if plot_url %}
-    <div class="col-md-6 mb-4">
-        <img src="{{ url_for('uploaded_file', filename=plot_url) }}" class="grafico img-fluid" alt="Gráfico de Predição">
-    </div>
-    {% endif %}
-    
-    {% if plot_url_genero %}
-    <div class="col-md-6 mb-4">
-        <img src="{{ url_for('uploaded_file', filename=plot_url_genero) }}" class="grafico img-fluid" alt="Gráfico de Tipo de Gênero">
-    </div>
-    {% endif %}
-    
-    {% if plot_url_clientes %}
-    <div class="col-md-6 mb-4">
-        <img src="{{ url_for('uploaded_file', filename=plot_url_clientes) }}" class="grafico img-fluid" alt="Gráfico de Tipo de Clientes">
-    </div>
-    {% endif %}
-    
-    {% if plot_url_filial %}
-    <div class="col-md-6 mb-4">
-        <img src="{{ url_for('uploaded_file', filename=plot_url_filial) }}" class="grafico img-fluid" alt="Gráfico Pizza Filial">
-    </div>
-    {% endif %}
-    
-    {% if plot_url_mes %}
-    <div class="col-md-6 mb-4">
-        <img src="{{ url_for('uploaded_file', filename=plot_url_mes) }}" class="grafico img-fluid" alt="Gráfico Pizza Mês">
-    </div>
-    {% endif %}
-    
-    {% if plot_url_pagamento %}
-    <div class="col-md-6 mb-4">
-        <img src="{{ url_for('uploaded_file', filename=plot_url_pagamento) }}" class="grafico img-fluid" alt="Gráfico de Tipo de Pagamento">
-    </div>
-    {% endif %}
-</div>
-
-{% endif %}
-
-
+    <div class="w-100 d-flex justify-content-center mt-3">
+        <iframe  width="980" height="723" src="https://lookerstudio.google.com/embed/reporting/424e9b94-c01f-4785-bf37-1a74c1d7e308/page/FTFPF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+    </div>    
 {% endblock %}
